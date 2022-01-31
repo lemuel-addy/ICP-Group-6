@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 public class project1 {
 
+    //try
+    int trail ;
 
     // courses storage array
 
