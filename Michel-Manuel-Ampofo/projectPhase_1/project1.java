@@ -2,11 +2,34 @@ package projectPhase_1;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Arrays;
+
+
+
 
 public class project1 {
 
-    //try
-    int trail ;
+    // courses student register for  :   email  and course name
+    static HashMap<String, String> courseRegistrationNames = new HashMap<>();
+
+    // courses student register for  : course code and name
+    static HashMap<String, String> registeredCoursesStudentsName = new HashMap<>();
+
+    // course creator : course code and email
+    static HashMap<String, String> courseCreatorEmail = new HashMap<>();
+
+    // all courses created- course code and course name
+    static HashMap<String, String> TotalCourseInfo = new HashMap<>();
+
+    //course creator: course code and name
+    static HashMap<String, String> courseCreator = new HashMap<>();
+
+    // courses student register for  :   email  and course code
+    static HashMap<String, String> courseRegistration = new HashMap<>();
+
+
+
 
     // courses storage array
 
@@ -28,6 +51,119 @@ public class project1 {
     // updating profile
     static int UpdateAccountDetails = 100;
     static String[][] UpdateAccount = new String[ UpdateAccountDetails][7];
+
+    // view courses by email - email, course name and course code
+    static int studentMail = 100;
+    static String[][]  allregisteredCoursenames  = new String [studentMail][3];
+
+    // view course by email
+    private static void viewCourseByEmail(String email){
+
+        for (int i = 0; i <  allregisteredCoursenames.length; i++) {
+            if (email.equals(allregisteredCoursenames [i][0])) {
+                try {
+                    System.out.println("Registered course code is " + allregisteredCoursenames[i][1]);
+                    System.out.println("Registered course name  is " + allregisteredCoursenames[i][2]);
+                } catch (Exception e) {
+                    System.out.println("Sorry could not retrieve user course info. Try again ");
+
+                }
+            } else {
+                System.out.println("no course details exist for the user");
+            }
+
+        }
+
+    }
+
+    // view course by code .
+    private static void viewCourseByCode(String courseCode) {
+
+        for (String  i:  courseRegistration.keySet()) {
+            viewCourse();// additional course details
+            if (courseRegistration.get(i).equals(courseCode))
+                System.out.println("All  registered students  Emails: " + i);
+
+            for (String c : registeredCoursesStudentsName.keySet()) {
+                if (registeredCoursesStudentsName.get(c).equals(courseCode))
+                    System.out.println("All  registered students Names : " + c);
+
+
+            }
+
+        }
+
+    }
+
+
+
+
+    // add assignment
+    static String [][] Addassignment  = new String[studentMail][5];
+    // submit assignment
+    static String [][] submitAss  = new String[studentMail][5];
+
+
+    // add assignment
+    private  static void  addAssignment (String email, String password, String courseCode, String AssignmentName,  String AssigmentDescription,String dueDate, String AssinmentType){
+        boolean isFaculty = isFaculty(email).equals("True");
+        boolean iscreatorOfCourse = isCourseCreator(email,courseCode)==True;
+        boolean Flogin = facultyLogin(email,password).equals("True");
+
+        if( isFaculty &&  iscreatorOfCourse && Flogin){
+
+            for ( int i = 0; i< Addassignment.length; i++ ){
+                try{
+                    Addassignment [i][0] = courseCode;
+                    Addassignment [i][1] =AssignmentName;
+                    Addassignment [i][2] = AssigmentDescription;
+                    Addassignment [i][3] = dueDate;
+                    Addassignment [i][4] = AssinmentType;
+
+                    System.out.println("Added assigment to course successfully");
+
+                }
+
+                catch (Exception e){
+                    System.out.println("Sorry try again");
+
+                }
+
+            }
+
+        }
+
+        else {
+            System.out.println("Sorry check whether youve login or you are the course creator");
+
+        }
+
+    }
+
+    // is course creator
+    private static boolean isCourseCreator(String email , String courseCode) {
+        for (String c : courseCreatorEmail.keySet()) {
+            if (courseCreatorEmail.get(c).equals(courseCode) && c.equals(email)) {
+                try {
+                    System.out.println(" is the course creator ");
+                    return True;
+
+                } catch (Exception e) {
+                    System.out.println(" sorry cannot verify  the  creator of the course. Try again ");
+                    return False;
+                }
+
+            } else {
+                System.out.println(" Not a creator of the course ");
+
+            }
+        }
+        return False;
+    }
+
+
+
+
 
 
     private  static void  updateProfile() {
@@ -228,6 +364,103 @@ public class project1 {
 
     }
 
+    private static String facultyLogin(String Email, String Password) {
+
+        for (int i = 0; i < facultyEmail.size(); i++) {
+            output = (facultyEmail.contains(Email) && facultyPassword.contains(Password)) ? "True" : "False";
+
+        }
+        //System.out.println("login is "+ output);
+        return output;
+
+    }
+
+
+
+    // set notification preference. notification value for assignment , courses, score can be either yes or no
+
+    private static void setNotificationPreferences(String Email, String password,  String Assignment4courseNotify ,  String score4AssignmentNotify, String register4CourseNotify ){
+        String StudentLogin = studentLogin(Email, password);
+        if (StudentLogin.equals("True")) {
+
+            switch (Assignment4courseNotify.toLowerCase()){
+                case "yes":
+                    System.out.println(" You will be notified via email  when an assignment is posted");
+                    break;
+
+                case "no":
+                    System.out.println(" You can change your notification settings later ");
+                    break;
+            }
+
+
+            switch (score4AssignmentNotify.toLowerCase()){
+                case "yes":
+                    System.out.println(" You will be notified via email  when a score for an  assignment is posted");
+                    break;
+
+                case "no":
+                    System.out.println(" You can change your notification settings later ");
+                    break;
+            }
+
+            switch (register4CourseNotify.toLowerCase()){
+                case "yes":
+                    System.out.println(" You will be notified via email when you register for a course ");
+                    break;
+
+                case "no":
+                    System.out.println(" You can change your notification settings later ");
+                    break;
+            }
+
+        }
+
+        else{
+            System.out.println(" Please login");
+        }
+
+
+
+
+    }
+
+    // register course : email is student email
+    private static void registerCourse(String email, String passwrod, String userName, String courseCode, String CourseName){
+        if(isStudent(email).equals("True") && studentLogin(email,passwrod).equals("True")){
+            for (String s : TotalCourseInfo.keySet() ){
+                if ( s.equals(courseCode)){
+                    // course was created by faculty add student
+                    courseRegistration.put(email,courseCode);
+                    registeredCoursesStudentsName.put(userName,courseCode);
+                    courseRegistrationNames.put(CourseName,email);
+
+                    for (int i = 0; i < allregisteredCoursenames.length; i++){
+                        allregisteredCoursenames[i][0]= email;
+                        allregisteredCoursenames[i][1]= courseCode;
+                        allregisteredCoursenames[i][2]= CourseName;
+                    }
+
+                    System.out.println("course registration successful");
+
+                }
+
+                else {
+                    System.out.println("sorry the course doesnt exist ");
+                }
+
+            }
+
+        }
+        else {
+            System.out.println("sorry course registration failed");
+        }
+
+    }
+
+
+
+
     private static  String  makeFaculty(String Email) {
 
         Scanner email = new Scanner(System.in);
@@ -263,6 +496,344 @@ public class project1 {
         return login;
     }
 
+
+
+
+    // display all created courses
+    private static void viewCourse() {
+
+        for (String s : TotalCourseInfo.keySet() ){
+            System.out.println("Course Name: "+ s);
+            System.out.println("courseInstructor Name: "+ courseCreator.get(s));
+            System.out.println("courseInstructor Email: "+ courseCreatorEmail.get(s));
+
+            for (String i : TotalCourseInfo.values() ){
+                System.out.println("Course Name: "+ i);
+
+
+            }
+        }
+
+
+    }
+
+    // email is the email of the faculty .
+// Hashmap is used so that each course is identified by its unique  code and no 2 courses can have the same  course code
+    private static void createCourse(String email, String password,String courseCode, String courseName, String Instructorname) {
+        if (isFaculty(email).equals("True") && facultyLogin(email, password).equals("True")) {
+            if (!(TotalCourseInfo.containsKey(courseCode))){
+                TotalCourseInfo.put(courseCode,courseName);
+                courseCreator.put(courseCode,Instructorname);
+                courseCreatorEmail.put(courseCode,email);
+
+                System.out.println("Course created successfully");
+
+            }
+
+            else{
+                System.out.println("Course created failed");
+            }
+
+        }
+        else {
+            System.out.println("Sorry dont have the permission to create a course");
+
+        }
+
+    }
+
+
+
+    // view all assignments grade
+    private static void viewAllAssignmentGrade( String email , String Coursecode, String password ) {
+        String StudentLogin = studentLogin(email, password);
+        if (StudentLogin.equals("True")) {
+            for (int i = 0; i < submitAss.length; i++) {
+                if (email.equals(submitAss[i][3]) && submitAss[i][1].equals(Coursecode)) {
+                    try {
+                        System.out.println("Course code  " + submitAss[i][1]);
+                        System.out.println("Assignment name " + submitAss[i][0]);
+                        System.out.println("Assignment score " + submitAss[i][4]);
+                        System.out.println("Assignment Grade " + gradeScore(Double.parseDouble(submitAss[i][4])));
+
+                    } catch (Exception e) {
+                        System.out.println("Sorry could retrieve  assignment grade . Try again ");
+
+                    }
+                }
+
+            }
+
+        } else {
+            System.out.println("Please login ");
+        }
+    }
+
+
+    // view all  assignment grade
+    private  static void  viewAssignmentGrades (String email, String password, String courseCode, String AssignmentName){
+        boolean Fa_culty = isFaculty(email).equals("True");
+        boolean creatorOfCourse = isCourseCreator(email,courseCode)==True;
+        boolean login = facultyLogin(email,password).equals("True");
+
+        if( Fa_culty &&  creatorOfCourse && login) {
+
+            for (int i = 0; i < allregisteredCoursenames.length; i++) {
+                for (int s = 0; s < submitAss.length; s++) {
+
+                    // those who have submitted assignment
+                    if ( submitAss[s][1].equals(courseCode) && submitAss[s][0].equals(AssignmentName) && submitAss[s][4] !=null ) {
+                        try {
+                            System.out.println("--------- students with scored assignment  are ------------ ");
+                            System.out.println(" Student email is " + submitAss[s][3]);
+                            System.out.println(" Student score is " + submitAss[s][4]);
+                            System.out.println("Assignment Grade " + gradeScore(Double.parseDouble(submitAss[s][4])));
+                            System.out.println(" --------------------------");
+
+                        } catch (Exception e) {
+                            System.out.println("Sorry try again");
+                        }
+                    }
+                    // students with no scores yet
+                    else if (submitAss[s][1].equals(courseCode) && submitAss[s][0].equals(AssignmentName) && submitAss[s][4] ==null) {
+                        System.out.println("--------- students with no score for  submitted  assignments  ------------ ");
+                        System.out.println(" Student email is " + submitAss[s][0]);
+                        System.out.println(" Student score pending");
+                        System.out.println(" --------------------------");
+
+                    }
+                }
+            }
+        }
+
+        else {
+            System.out.println("Sorry check whether you've not  login or you are the course creator");
+
+        }
+
+    }
+
+
+
+    // view assignment grade
+    private static void viewAssignmentGrade( String email , String Coursecode, String  assign_mentName, String password ) {
+
+        String StudLogin = studentLogin(email, password);
+        if (StudLogin.equals("True")) {
+            for (int i = 0; i < submitAss.length; i++) {
+                if (email.equals(submitAss[i][3]) && submitAss[i][1].equals(Coursecode) && submitAss[i][0].equals(assign_mentName)) {
+                    try {
+
+                        System.out.println("Course code  " + submitAss[i][1]);
+                        System.out.println("Assignment name " + submitAss[i][0]);
+                        System.out.println("Assignment score " + submitAss[i][4]);
+                        System.out.println("Assignment Grade " + gradeScore(Double.parseDouble(submitAss[i][4])));
+
+
+                    } catch (Exception e) {
+                        System.out.println("Sorry could retrieve  assignment grade. Try again ");
+
+                    }
+                }
+
+            }
+
+        } else {
+            System.out.println("Please login ");
+        }
+    }
+
+
+
+
+    // grade assignment
+    private static String gradeScore( double  score ){
+        if (score >= 85 && score  <= 100 ){
+            System.out.println("A+");
+            return "A+" ;
+        }
+        else if (score >=80 && score <= 84 ){
+            System.out.println("A");
+            return "A" ;
+        }
+        else if (score >=75 && score <= 79 ){
+            System.out.println("B+");
+            return "B+" ;
+        }
+        else if (score >=70 && score <= 74 ){
+            System.out.println("B");
+            return "B" ;
+        }
+        else if (score >=65 && score <= 69 ){
+            System.out.println("C+");
+            return "C+" ;
+        }
+        else if (score >=60 && score <= 64 ){
+            System.out.println("C");
+            return "C" ;
+        }
+        else if (score >=55 && score <= 59 ){
+            System.out.println("D+");
+            return "D+" ;
+        }
+        else if (score >=50 && score <= 54 ){
+            System.out.println("D");
+            return "D" ;
+        }
+        else if (score <= 49 ){
+            System.out.println("E");
+            return "E" ;
+        }
+
+        else {  System.out.println("no score "); return "no score";}
+    }
+
+    // submit assignment
+    private static void submitAssignment( String email , String Coursecode, String  assign_mentName, String password, String FileSubmit ) {
+
+        String StudLogin = studentLogin(email, password);
+        if (StudLogin.equals("True")) {
+            for (int i = 0; i < allregisteredCoursenames.length; i++) {
+                if (email.equals(allregisteredCoursenames[i][0]) && hasAssignment(Coursecode) && Addassignment[i][1].equals(assign_mentName)) {
+                    try {
+                        submitAss[i][0]= assign_mentName;
+                        submitAss[i][1]= Coursecode;
+                        submitAss[i][2] = FileSubmit;
+                        submitAss[i][3] = email;
+                        System.out.println("Assignment submitted sucessfully");
+
+                    } catch (Exception e) {
+                        System.out.println("Sorry could not submit  assignment. Try again ");
+
+                    }
+                }
+
+            }
+
+        } else {
+            System.out.println("Please login ");
+        }
+    }
+
+    // view assignments by email
+    private static void viewAssignmentByEmail(String email, String CourseCode){
+
+        for (int i = 0; i <  allregisteredCoursenames.length; i++) {
+            if (email.equals(allregisteredCoursenames[i][0]) &&  hasAssignment(CourseCode)) {
+                try {
+                    System.out.println("Assignment name  " + Addassignment[i][1]);
+                    System.out.println("Assignment description  " + Addassignment[i][2]);
+                    System.out.println("Assignment due date  " + Addassignment[i][3]);
+                    System.out.println("Assignment type " + Addassignment[i][4]);
+                } catch (Exception e) {
+                    System.out.println("Sorry could not retrieve assignment info. Try again ");
+
+                }
+            } else {
+                System.out.println("sorry no  details");
+            }
+
+        }
+
+    }
+
+
+    // check if a course has an assignment
+    private static boolean hasAssignment(String courseCode){
+
+        for( int i = 0; i< Addassignment.length; i++){
+            if( courseCode.equals(Addassignment[i][1])){
+
+                try {
+                    System.out.println("assignment is created for the course");
+                    return True;
+
+                }
+                catch (Exception e){
+                    System.out.println("Try checking again");
+                    return False;
+                }
+
+            }
+            else {
+                System.out.println("assignment not  created for the course");
+            }
+        }
+        return False;
+    }
+
+    // view assignments by course
+    private static void viewAssignmentByCourse(String courseCode){
+
+        for (int i = 0; i <  Addassignment.length; i++) {
+            if (courseCode.equals(Addassignment[i][0])) {
+                try {
+                    System.out.println("Assignment name is " + Addassignment[i][1]);
+                    System.out.println("Assignment description is " + Addassignment[i][2]);
+                    System.out.println("Assignment due date  is " + Addassignment[i][3]);
+                    System.out.println("Assignment type  is " + Addassignment[i][4]);
+                } catch (Exception e) {
+                    System.out.println("Sorry could not retrieve assignment info. Try again ");
+
+                }
+            } else {
+                System.out.println("sorry cannot view the details");
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+    // view submissions
+    private  static void  viewSubmissions (String email, String password, String courseCode, String AssignmentName, String stdemail){
+        boolean Faculty = isFaculty(email).equals("True");
+        boolean creatorOfCourse = isCourseCreator(email,courseCode)==True;
+        boolean login = facultyLogin(email,password).equals("True");
+
+        if( Faculty &&  creatorOfCourse && login) {
+
+            for (int i = 0; i < allregisteredCoursenames.length; i++) {
+                for (int s = 0; s < submitAss.length; s++) {
+
+                    // those who have submitted assignment
+                    if ( submitAss[s][1].equals(courseCode) && submitAss[s][0].equals(AssignmentName)  ) {
+                        try {
+                            System.out.println("--------- students who have submitted their assignments are ------------ ");
+                            System.out.println(" Student email is " + submitAss[s][3]);
+
+                        } catch (Exception e) {
+                            System.out.println("Sorry try again");
+                        }
+                    }
+                    // those who have not  submitted assignment
+                    else if (allregisteredCoursenames[i][0].equals(stdemail) &&  Arrays.asList(submitAss).contains(stdemail)== False) {
+                        System.out.println("--------- students who have not  submitted their assignments are ------------ ");
+                        System.out.println(" Student with  email " + allregisteredCoursenames[i][0] + " No submission ");
+
+                    }
+                }
+            }
+        }
+
+        else {
+            System.out.println("Sorry check whether youve login or you are the course creator");
+
+        }
+
+    }
+
+
+
+
+
+
     private static String  makeStudent(String Email) {
 
         Scanner em_ail = new Scanner(System.in);
@@ -281,7 +852,7 @@ public class project1 {
         if (isAdmin(minEmail).equals("True") & login.equals("True")){
 
             studentEmail.add(Email);
-            System.out.println("Student account succesfully made");
+            System.out.println("Student account successfully made");
         }
 
         else  if(isAdmin(minEmail).equals("True") && adminLogin(minEmail,
@@ -291,7 +862,7 @@ public class project1 {
         }
 
         else {
-            System.out.println("Please contact admin to make these changes. Your account does not have admin priviledges");
+            System.out.println("Please contact admin to make these changes. Your account does not have admin privileges");
         }
 
         return login;
