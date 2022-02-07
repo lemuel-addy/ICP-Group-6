@@ -69,7 +69,7 @@ public class project1 {
 
                 }
             } else {
-                System.out.println("no course details exist for the user");
+                System.out.println("Course details do not exist for the user");
             }
 
         }
@@ -82,7 +82,7 @@ public class project1 {
         for (String  i:  courseRegistration.keySet()) {
             viewCourse();// additional course details
             if (courseRegistration.get(i).equals(courseCode))
-                System.out.println("All  registered students  Emails: " + i);
+                System.out.println("All  registered students emails: " + i);
 
             for (String c : registeredCoursesStudentsName.keySet()) {
                 if (registeredCoursesStudentsName.get(c).equals(courseCode))
@@ -120,12 +120,12 @@ public class project1 {
                     Addassignment [i][3] = dueDate;
                     Addassignment [i][4] = AssinmentType;
 
-                    System.out.println("Added assigment to course successfully");
+                    System.out.println("Assignment added to course successfully");
 
                 }
 
                 catch (Exception e){
-                    System.out.println("Sorry try again");
+                    System.out.println("Sorry, please try again");
 
                 }
 
@@ -134,7 +134,7 @@ public class project1 {
         }
 
         else {
-            System.out.println("Sorry check whether youve login or you are the course creator");
+            System.out.println("Sorry check whether you have logged in or you are the course creator");
 
         }
 
@@ -149,7 +149,7 @@ public class project1 {
                     return True;
 
                 } catch (Exception e) {
-                    System.out.println(" sorry cannot verify  the  creator of the course. Try again ");
+                    System.out.println("Sorry cannot verify the creator of the course. Try again ");
                     return False;
                 }
 
@@ -168,7 +168,7 @@ public class project1 {
 
     private  static void  updateProfile() {
 
-        /*  This is done for admin access only, to prevent changing of critical info like gpa by students.*/
+        /* This is done for admin access only*/
 
         System.out.print("\n");
         System.out.print("To update user profile, login first:\n");
@@ -246,11 +246,11 @@ public class project1 {
         else if(isAdmin(AdminEmail).equals("True") &&
                 adminLogin(AdminEmail, Admin_Password).equals("False")){
 
-            System.out.println("incorrect Password");
+            System.out.println("Incorrect Password");
         }
 
         else {
-            System.out.println("incorrest Username or permission denied to update your details");
+            System.out.println("Incorrect username or permission denied to update your details");
         }
 
     }
@@ -278,7 +278,7 @@ public class project1 {
                 Password).equals("True") || isStudent(Email).equals("True") &&
                 studentLogin(Email,Password).equals("True")) {
 
-            System.out.print("Enter the username of the person you want to view  : ");
+            System.out.print("Enter person's username: ");
             String mail = updates.nextLine();
 
             for (int i = 0; i < UpdateAccount.length; i++ ) {
@@ -385,7 +385,7 @@ public class project1 {
 
             switch (Assignment4courseNotify.toLowerCase()){
                 case "yes":
-                    System.out.println(" You will be notified via email  when an assignment is posted");
+                    System.out.println(" You will be notified via email when an assignment is posted");
                     break;
 
                 case "no":
@@ -426,8 +426,8 @@ public class project1 {
     }
 
     // register course : email is student email
-    private static void registerCourse(String email, String passwrod, String userName, String courseCode, String CourseName){
-        if(isStudent(email).equals("True") && studentLogin(email,passwrod).equals("True")){
+    private static void registerCourse(String email, String password, String userName, String courseCode, String CourseName){
+        if(isStudent(email).equals("True") && studentLogin(email,password).equals("True")){
             for (String s : TotalCourseInfo.keySet() ){
                 if ( s.equals(courseCode)){
                     // course was created by faculty add student
@@ -446,14 +446,14 @@ public class project1 {
                 }
 
                 else {
-                    System.out.println("sorry the course doesnt exist ");
+                    System.out.println("Course doesnt exist ");
                 }
 
             }
 
         }
         else {
-            System.out.println("sorry course registration failed");
+            System.out.println("Sorry, Course registration failed");
         }
 
     }
@@ -481,7 +481,7 @@ public class project1 {
         if (isAdmin(AdminEmail).equals("True") & login.equals("True")){
 
             facultyEmail.add(Email);
-            System.out.println(" Successfully made user  faculty");
+            System.out.println("User faculty successfully made");
         }
 
         else  if(isAdmin(AdminEmail).equals("True") &&
@@ -491,7 +491,7 @@ public class project1 {
         }
 
         else {
-            System.out.println("Please contact admin to make these changes. Your account does not have admin priviledges");
+            System.out.println("Please contact admin to make these changes. Your account does not have admin privileges");
         }
         return login;
     }
@@ -516,7 +516,6 @@ public class project1 {
 
 
     }
-
     // email is the email of the faculty .
 // Hashmap is used so that each course is identified by its unique  code and no 2 courses can have the same  course code
     private static void createCourse(String email, String password,String courseCode, String courseName, String Instructorname) {
@@ -531,7 +530,7 @@ public class project1 {
             }
 
             else{
-                System.out.println("Course created failed");
+                System.out.println("Course creation failed");
             }
 
         }
@@ -557,7 +556,7 @@ public class project1 {
                         System.out.println("Assignment Grade " + gradeScore(Double.parseDouble(submitAss[i][4])));
 
                     } catch (Exception e) {
-                        System.out.println("Sorry could retrieve  assignment grade . Try again ");
+                        System.out.println("Sorry could retrieve assignment grade. Try again ");
 
                     }
                 }
@@ -607,7 +606,7 @@ public class project1 {
         }
 
         else {
-            System.out.println("Sorry check whether you've not  login or you are the course creator");
+            System.out.println("Sorry check whether you've logged in or you are the course creator");
 
         }
 
@@ -631,7 +630,7 @@ public class project1 {
 
 
                     } catch (Exception e) {
-                        System.out.println("Sorry could retrieve  assignment grade. Try again ");
+                        System.out.println("Sorry could retrieve assignment grade. Try again ");
 
                     }
                 }
@@ -700,10 +699,10 @@ public class project1 {
                         submitAss[i][1]= Coursecode;
                         submitAss[i][2] = FileSubmit;
                         submitAss[i][3] = email;
-                        System.out.println("Assignment submitted sucessfully");
+                        System.out.println("Assignment submitted successfully");
 
                     } catch (Exception e) {
-                        System.out.println("Sorry could not submit  assignment. Try again ");
+                        System.out.println("Sorry could not submit assignment. Try again ");
 
                     }
                 }
@@ -745,7 +744,7 @@ public class project1 {
             if( courseCode.equals(Addassignment[i][1])){
 
                 try {
-                    System.out.println("assignment is created for the course");
+                    System.out.println("Assignment is created for the course");
                     return True;
 
                 }
@@ -756,7 +755,7 @@ public class project1 {
 
             }
             else {
-                System.out.println("assignment not  created for the course");
+                System.out.println("Assignment creation failed");
             }
         }
         return False;
@@ -823,7 +822,7 @@ public class project1 {
         }
 
         else {
-            System.out.println("Sorry check whether youve login or you are the course creator");
+            System.out.println("Sorry check whether you've logged in or you are the course creator");
 
         }
 
