@@ -20,32 +20,44 @@ public class papayaw {
   ArrayList<String> assignmentDescriptionArr = new ArrayList<String>();
   ArrayList<String> assignmentDueArr = new ArrayList<String>();
   ArrayList<String> assignmentTypeArr = new ArrayList<String>();
+  ArrayList<String> assignmentSubArr = new ArrayList<String>();
+  ArrayList<Integer> ScoresArr = new ArrayList<Integer>();
 
 
 
   boolean profileExists;
  
 
-  String email, password, firstname, lastname, yearGroup, currentGpa,  dOB, admin, faculty, courseName, courseCode, courseRegister1, viewCC, assignmentName, assignmentDescription, assignmentDue,assignmentType, viewAA ;
+  String email, password, firstname, lastname, yearGroup, currentGpa,  dOB, admin, faculty, courseName, courseCode, courseRegister1, viewCC, assignmentName, assignmentDescription, assignmentDue,assignmentType, viewAA, subAssignment, viewSub, scoreAssign, submitEmail, viewAssign, submitCourseCode, submitVCourseCode, viewGrade, viewCourseCodeGrade, viewCourseCodeAll, viewEmailsAll ;
+  int scores;
 
 
 
   public static void main(String[] args) {
 
     papayaw user = new papayaw();
-    user.createAccount();
+    //user.createAccount();
     //user.login();
     //user.updateProfile();
     //user.viewProfile();
-    //user.isAdmin();
-    //user.makeFaculty();
-    //user.isFaculty();
-    //user.createCourse();
+   //user.isAdmin();
+   //user.makeFaculty();
+   // user.isFaculty();
+   // user.createCourse();
     //user.viewCourses();
     //user.registerCourse();
    // user.viewCourseByCode();
-   // user.addAssignment();
-   //user.viewAssignmentByCourse()
+    //user.addAssignment();
+   //user.viewAssignmentByCourse();
+   //user.submitAssignment();
+   //user.viewSubmission();
+   //user.scoreAssignment();
+   //user.viewAssignmentScore();
+   //user.viewAssignmentScores();
+   //user.viewAssignmentGrade();
+   //user.viewAssignmentGrades();
+   //user.viewAllAssignmentScores();
+   //user.setNotificationsPreferences();
 
     
 
@@ -332,7 +344,7 @@ public void addAssignment(){
   System.out.println(" Add an assignment here ! ");
 
 
-  System.out.println("Enter Assignment Namel ");
+  System.out.println("Enter Assignment Name ");
   assignmentName = allAssignmentName.nextLine();
 
   System.out.println("Enter Assingmnet Description ");
@@ -381,7 +393,287 @@ public void viewAssignmentByCourse(){
 
 }
 
+public void submitAssignment(){
+  if(login() ==  true){
+
+    System.out.println("Submit Assignment");
+
+    Scanner allSubAssignment = new Scanner(System.in);
+
+    System.out.println("Enter your Assignment ");
+    subAssignment = allSubAssignment.nextLine();
+
+    assignmentSubArr.add(subAssignment);
+
+    System.out.println("Thank you for submitting!");
+
+
+  }
 
 
 }
+
+
+public void viewSubmission(){
+  if (login() == true){
+
+  Scanner allSub = new Scanner(System.in);
+
+  System.out.println("Enter Assignment Name  ");
+  viewSub = allSub.nextLine();
+
+  if(assignmentNameArr.contains(viewSub)){
+
+    System.out.println("Submissions : " + assignmentSubArr );
+
+  }else{
+    System.out.println("No submissions");
+  }
+}
+
+
+}
+
+
+public void scoreAssignment(){
+
+  System.out.println(" Score Assignment ");
+
+  Scanner allScoreAssignment = new Scanner(System.in);
+  Scanner allSubmitEmail = new Scanner(System.in);
+  Scanner allScores = new Scanner(System.in);
+  Scanner allSCourseCode = new Scanner(System.in);
+
+
+
+  System.out.println("Enter your Assignment Name ");
+  scoreAssign = allScoreAssignment.nextLine();
+
+  System.out.println("Enter your Email ");
+  submitEmail = allSubmitEmail.nextLine();
+
+  System.out.println("Enter your course code ");
+  submitCourseCode = allSCourseCode.nextLine();
+
+  System.out.println("Enter Score ");
+  scores = allScores.nextInt();
+
+  if(viewSub.equals(scoreAssign)){
+    ScoresArr.add(scores);
+
+  }else{
+    System.out.println(" Error ! ");
+
+  }
+
+
+}
+
+
+public void viewAssignmentScore(){
+  if(login() == true){
+
+  Scanner allviewScoreAssignment = new Scanner(System.in);
+  Scanner allviewCourseCode = new Scanner(System.in);
+
+  System.out.println("Enter your Assignment Name ");
+  viewAssign = allviewScoreAssignment.nextLine();
+
+  System.out.println("Enter your course code ");
+  submitVCourseCode = allviewCourseCode.nextLine();
+
+  if(viewAssign.equals(scoreAssign)){
+    //ScoresArr.add(scores);
+    System.out.println("This is your assignment score " + scores);
+
+  }
+
+
+}
+
+
+}
+
+public void viewAssignmentScores(){
+
+  if(login() == true){
+
+    Scanner allviewScoreAssignment = new Scanner(System.in);
+    Scanner allviewCourseCode = new Scanner(System.in);
+  
+    System.out.println("Enter your Assignment Name ");
+    viewAssign = allviewScoreAssignment.nextLine();
+  
+    System.out.println("Enter your course code ");
+    submitVCourseCode = allviewCourseCode.nextLine();
+  
+    if(viewAssign.equals(scoreAssign)){
+      ScoresArr.add(scores);
+      System.out.println("These are your assignment scores " + ScoresArr);
+  
+    }
+  }
+
+
+}
+
+//viewAssignmentGrade
+
+
+public void viewAssignmentGrade(){
+  if(login() == true){
+
+  Scanner allviewAssignmentGrade = new Scanner(System.in);
+  Scanner allviewCourseCodeG = new Scanner(System.in);
+
+  System.out.println("Enter your Assignment Name ");
+  viewGrade = allviewAssignmentGrade.nextLine();
+
+  System.out.println("Enter your course code ");
+  viewCourseCodeGrade = allviewCourseCodeG.nextLine();
+
+
+  if(viewGrade.equals(scoreAssign)){
+    //ScoresArr.add(scores);
+    System.out.println("This is your assignment score " + scores);
+
+    if( scores > 50){
+
+      System.out.println("Grade is an A for " + email );
+    }else if(scores < 50){
+
+      System.out.println("Grade is an B " + email);
+      
+    }
+
+  }
+
+
+}
+
+}
+
+public void viewAssignmentGrades(){
+  if(login() == true){
+
+  Scanner allviewAssignmentGrade = new Scanner(System.in);
+  Scanner allviewCourseCodeG = new Scanner(System.in);
+
+  System.out.println("Enter your Assignment Name ");
+  viewGrade = allviewAssignmentGrade.nextLine();
+
+  System.out.println("Enter your course code ");
+  viewCourseCodeGrade = allviewCourseCodeG.nextLine();
+
+  System.out.println("These are assignment scores " + ScoresArr);
+
+  for (int i = 0; i < ScoresArr.size(); i++) {
+    if(viewGrade.equals(scoreAssign)){
+      //ScoresArr.add(scores);
+     
+      if( scores > 50){
+
+
+    
+        System.out.println("Grade is an A");
+      }else if(scores < 50){
+
+       
+        System.out.println("Grade is an B");
+        
+      }
+  
+    }
+  
+  
+  }
+  }
+
+
+
+}
+
+public void viewAllAssignmentScores(){
+  if(login() == true){
+
+    Scanner allviewAllAssignScores = new Scanner(System.in);
+    Scanner allAssignmentEmail = new Scanner(System.in);
+
+    System.out.println("Enter your email ");
+    viewEmailsAll = allAssignmentEmail.nextLine();
+
+
+    System.out.println("Enter your course code ");
+    viewCourseCodeAll = allviewAllAssignScores.nextLine();
+
+    System.out.println( email + " your Assignment : " + viewAssign + " and your score : " + scores +  " and grade :"  );
+
+
+
+
+
+
+  }
+}
+
+
+public void setNotificationsPreferences(){
+
+  if(login() == true){
+
+   Scanner YesNo = new Scanner(System.in);
+   
+   System.out.println(" Should an email be sent when an asssignemnt is posted? ");
+   String yesno = YesNo.next();
+      
+   
+   if(yesno.equals("yes")) {
+    
+    System.out.println(" Done successfully !");
+    
+   }
+   else if(yesno.equals("no")) {
+    
+    System.out.println(" Okay, you might need it tho ");
+    
+   }
+
+   Scanner YesNot = new Scanner(System.in);
+   
+   System.out.println(" Should an email be sent to user when score is submitted ? ");
+   String yesnot = YesNot.next();
+      
+   
+   if(yesnot.equals("yes")) {
+    
+    System.out.println(" Done successfully !");
+    
+   }
+   else if(yesnot.equals("no")) {
+    
+    System.out.println(" Okay, you might need it though ! ");
+    
+   }
+
+
+
+
+
+  }
+   
+   
+  
+  
+ }
+  
+ 
+
+
+
+
+}
+
+
+
+
 

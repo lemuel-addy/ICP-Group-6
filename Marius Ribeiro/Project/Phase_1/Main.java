@@ -19,6 +19,7 @@ public class Main {
     //Assignment pairing
     static Map <String, List> assignmentByCourse = new HashMap<>();
     static Map <String, List> assignmentByEmail = new HashMap<>();
+    static Map <Map, String> willWork = new HashMap<>();
 
 
     /* list containing details via ArrayLists */
@@ -39,18 +40,53 @@ public class Main {
     static List<String> assignment = new ArrayList<>();
 
 
+    /*Actual Arrays*/
+    //static int[] rows;
+
+    static String[][] assSubmissionArray;
+
+
+    //Column allocation
+    static int emailColumn = 0, codeColumn =1, assNameColumn =2, submissionColumn = 3, scoreColumn = 3;
+    static int newEntryRow = 0;
+    private static int newEntryRowScore = 0;
+
+
+    static String[][] assScoreArray;
+
+    static String[][] permissionsArray;
+
+    static int[] position;
 
 
     /* Email & Password Entry Variables */
     public static String emailInput = null, passwordInput = null, generalInput = null;
 
-
     public static void main(String[] args) {
-	
+	//createAccount();
+
+    createAccount();
+
+    //login();
+
+    updateProfile();
+
+    viewProfile();
+
+
+
+
 
     }
-   
-    public static void emailEntry(){
+
+
+
+
+
+
+// Methods
+    //email and password entry methods
+public static void emailEntry(){
     System.out.println("Enter your email address:");
     Scanner emInput = new Scanner(System.in);
     emailInput = emInput.nextLine();
@@ -67,9 +103,10 @@ public static void passwordEntry(){
         Scanner genInput = new Scanner(System.in);
         generalInput = genInput.nextLine();
     }
-    
-    
-    
+
+
+
+
     public static void createAccount(){
     System.out.println("Welcome to the Create Account Page");
 
@@ -93,21 +130,27 @@ public static void passwordEntry(){
             passVerification = new Scanner(System.in);
             passwordVerification = passVerification.nextLine();
         }
-    
+    //System.out.println("Email: " + emailInput + "\nPassword: " + passwordInput + "\nPassword Ver: " + passwordVerification);
+
+    //Email to Password mapping
+    //Map<String, String> studentLogin = new HashMap<String, String>();
 
     studentLogin.put(emailInput, passwordInput);
-   
+    
 }
-    
-    
+
+public Boolean isVaildStudent(){
+    return studentLogin.containsKey(this);
+}
+
+
 //2
 public static boolean login() {
 
     System.out.println("Welcome to the Login Page.\nPlease enter your email address:");
 
-    //successful login flag
     boolean response = false;
-    
+ 
 
     //check if array is empty
     if (studentLogin.isEmpty()){
@@ -117,7 +160,7 @@ public static boolean login() {
     createAccount();
     }
 
- 
+    //Actual login
 
 
     //email section
@@ -134,9 +177,10 @@ public static boolean login() {
 
     return response;
 
+
     }
 
-  public static void updateProfile(){
+    public static void updateProfile(){
         System.out.println("Welcome to the Profile Update page\n");
 
         if (login()){
@@ -156,7 +200,7 @@ public static boolean login() {
             System.out.println("\nPlease enter your Year Group:");
             Scanner yearInput = new Scanner(System.in);
             String yearGroupStr =  yearInput.nextLine();
-            
+            //int yearGroup = Integer.parseInt(yearGroupStr);
 
             //current GPA
             System.out.println("\nPlease enter your current GPA:");
@@ -173,7 +217,7 @@ public static boolean login() {
             profileList = new ArrayList<>(Arrays.asList("Email: " + emailInput, firstName, lastName,
                     "Year group: " + yearGroupStr, "GPA: " + gpaStr, birthday));
 
-          
+           
 
             //main job
             if(profile.get(emailInput )== null){
@@ -189,8 +233,10 @@ public static boolean login() {
 
      
     }
-    
-    public static void viewProfile(){
+
+
+
+public static void viewProfile(){
     System.out.println("\nWelcome to the View Profile page!");
         if (login()){
                 if(profile.isEmpty() || profile.get(emailInput).isEmpty()){
@@ -199,12 +245,18 @@ public static boolean login() {
 
             System.out.println("Your Profile is as follows:\n" + profile.get(emailInput));
 
+                //
+            //System.out.println("Testing...\n" + profile.values());
         }
 }
-    
-    // #6
+
+
+
+// #6
 public static boolean isAdmin() {
     boolean state = false;
+    /*System.out.println("To know if you are an admin,");
+    emailEntry();*/
 
     if (adminList.contains(emailInput))
         state = true;
@@ -213,12 +265,11 @@ public static boolean isAdmin() {
     return state;
 }
 
-
 // #7
 public static void makeFaculty(){
     System.out.println("Make faculty Page\n");
         if (login() && isAdmin()){    //Login requirement
-        
+        //if(isAdmin()){
             System.out.println("To add to faculty: ");
             emailEntry();
 
@@ -228,12 +279,12 @@ public static void makeFaculty(){
 
 
     }
-      else{
+
+
+        else{
             System.out.println("Feature is inaccessible");
         }
 }
-
-
 // #8
 public static boolean isFaculty(){
         boolean state = false;
@@ -243,9 +294,9 @@ public static boolean isFaculty(){
 
         return state;
     }
-    
-    
-    
+
+
+
 
 // #9
 public static void createCourse(){
@@ -285,7 +336,6 @@ public static void viewCourses(){
         System.out.println("Courses:\n" + courseInfo.values());
 }
 
-
 // #11
 public static void registerCourse() {
     System.out.println("Course Registraion\n");
@@ -322,9 +372,6 @@ public static void registerCourse() {
 
     }
 }
-
-
-
 // #12
     public static void viewCourseByCode() {
         System.out.println("\nView Course By Code");
@@ -347,9 +394,6 @@ public static void registerCourse() {
 
     }
 
-
-
-
 // #13
 public static void viewCoursesByEmail(){
     System.out.println("View course by email\n");
@@ -362,8 +406,6 @@ public static void viewCoursesByEmail(){
                 System.out.println("NA");
             }
 }
-
-
 
 //#14
 public static void addAssignment(){
@@ -420,6 +462,7 @@ public static void addAssignment(){
        else{
                 System.out.println("NA");
             }
+
 }
 
 
@@ -429,7 +472,7 @@ public static void viewAssignmentsByCourse(){
     System.out.println("Enter Course Code:");
     generalEntry();
 
-    if(assignmentByCourse.containsKey(generalInput)){
+    if(assignmentByCourse.containsKey(generalInput)){ //Checks for validity of course code input
         System.out.println("\nResult:");
         System.out.println(assignmentByCourse.get(generalInput));
     }
@@ -438,5 +481,490 @@ public static void viewAssignmentsByCourse(){
         System.out.println("NA");
 }
 
+// #16
+public  static void viewAssignmentsByEmail(){
+    System.out.println("View assignments by Email");
+    emailEntry();
+
+  
+
 }
+
+// #17
+public static void submitAssignment(){
+    if (login()){
+        System.out.println("Input your course code:");
+        generalEntry();
+        String Code = generalInput;
+        if (assignmentByCourse.containsKey(Code)){//Checks course code
+            System.out.println("Input Assignment name:");
+            generalEntry();
+            String assignment = generalInput;
+            if (assignmentByCourse.get(Code).contains(assignment)){//Checks assignment name
+                //Assignment Input
+                System.out.println("\nPlease enter your assignment:\n");
+                generalEntry();
+
+
+                //Size
+                int size = courseCodeUserInfo.get(Code).size();
+
+                assSubmissionArray = new String[size][10];
+
+
+                //Entry
+                assSubmissionArray[newEntryRow][emailColumn] = emailInput;
+                assSubmissionArray[newEntryRow][codeColumn] = Code;
+                assSubmissionArray[newEntryRow][assNameColumn] = assignment;
+                assSubmissionArray[newEntryRow][submissionColumn] =generalInput;
+
+                //New entry increment
+                newEntryRow += 1;
+
+            }
+
+            else{
+                System.out.println("NA");
+            }
+
+        }
+        else {
+            System.out.println("NA");
+        }
+    }
+    else {
+        System.out.println("NA");
+    }
+}
+
+//2D array Search
+static boolean arraySearch(String[][] arr, String target) {
+        boolean res = false;
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = 0; j < arr[i].length; j++) {
+            if (arr[i][j] == target) {
+                res = true;
+                //position = ( i, j);
+            }
+
+        }
+    }
+    return res;
+}
+
+//2D array Row finder
+    
+static int[] arrayRowSearch(String[][] arr, String target, String targetTwo) {
+    boolean res = false;
+    boolean resTwo = false;
+    int rowInd = 0;
+    int[] rows =new int[arr[0].length];
+
+
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = 0; j < arr.length; j++) {
+            if (arr[i][j] == target) {
+                res = true;
+            }
+            if (arr[i][j] == targetTwo) {
+                resTwo = true;
+            }
+
+        }
+        if (res == true && resTwo == true){
+            rows[rowInd] = i;
+            rowInd += 1;
+        }
+
+
+        res = false;
+        resTwo = false;
+    }
+    return rows;
+}
+
+// #18
+public static void viewSubmissions(){
+    if(login() && isFaculty() && courseInfo.containsKey(emailInput)){
+        if (assSubmissionArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assSubmissionArray, assignmentName) && arraySearch(assSubmissionArray, code)){ //Validation
+                int ros[] = arrayRowSearch(assSubmissionArray, code, assignmentName);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Email:"+ assSubmissionArray[r][0] + "\nSubmission:\n"+ assSubmissionArray[r][3]);
+                    if(assSubmissionArray[r][3]==null){
+                        System.out.println("No Submission");
+                    }
+                }
+               \
+            }
+        }
+        else
+            System.out.println("NA");
+    }
+    else
+        System.out.println("NA");
+}
+
+// #19
+public static void scoreAssignment(){
+    if(login() && isFaculty() && courseInfo.containsKey(emailInput)){
+        if (login()){
+            System.out.println("Input your course code:");
+            generalEntry();
+            String Code = generalInput;
+            if (assignmentByCourse.containsKey(Code)){//Checks course code
+                System.out.println("Input Assignment name:");
+                generalEntry();
+                String assignment = generalInput;
+                if (assignmentByCourse.get(Code).contains(assignment)){//Checks assignment name
+                    //Assignment Input
+                    System.out.println("\nPlease enter Student Email:\n");
+                    generalEntry();
+                    String studentEmail = generalInput;
+
+                    System.out.println("Input Score");
+                    generalEntry();
+                    String score = generalInput;
+                    float scoreFloat = Float.parseFloat(score);
+                    while (scoreFloat > 100 || scoreFloat < 0){
+                        System.out.println("Input a score from 0 to 100");
+                        generalEntry();
+                        score = generalInput;
+                        scoreFloat = Float.parseFloat(score);
+                    }
+
+
+
+
+                    //Size
+                    //int size = courseCodeUserInfo.get(Code).size();
+
+                    assScoreArray = new String[100][10];
+
+
+                    //Entry
+                    assScoreArray[newEntryRowScore][emailColumn] = studentEmail;
+                    assScoreArray[newEntryRowScore][codeColumn] = Code;
+                    assScoreArray[newEntryRowScore][assNameColumn] = assignment;
+                    assSubmissionArray[newEntryRow][scoreColumn] =score;
+
+                    //New entry increment
+                    newEntryRowScore += 1;
+
+                }
+
+                else{
+                    System.out.println("NA");
+                }
+
+            }
+            else {
+                System.out.println("NA");
+            }
+        }
+        else {
+            System.out.println("NA");
+        }
+    }
+
+
+}
+
+
+// #20
+public static void viewAssignmentScore(){
+        if(login() ){
+        if (assScoreArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assScoreArray, assignmentName) && arraySearch(assScoreArray, emailInput)){ //Validation
+                int ros[] = arrayRowSearch(assScoreArray, emailInput, assignmentName);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Email:"+ assScoreArray[r][0] + "Assignment" + assScoreArray[r][2]+ "\nScore: "+ assScoreArray[r][3]);
+                    if(assScoreArray[r][3]==null){
+                        System.out.println("No Score");
+                    }
+                }
+
+            }
+            else
+                System.out.println("NA");
+        }
+        else
+            System.out.println("NA");
+    }
+        else
+            System.out.println("NA");
+}
+
+
+// #21
+public static void viewAssignmentScores(){
+    if(login() && isFaculty() && courseInfo.containsKey(emailInput)){
+        if (assScoreArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assScoreArray, assignmentName) && arraySearch(assScoreArray, code)){ //Validation
+                int ros[] = arrayRowSearch(assScoreArray, code, assignmentName);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Student Email:"+ assScoreArray[r][0] + "\nScore: "+ assScoreArray[r][3]);
+                    if(assScoreArray[r][3]==null){
+                        System.out.println("No Score");
+                    }
+                }
+
+            }
+            else
+                System.out.println("NA");
+        }
+        else
+            System.out.println("NA");
+    }
+    else
+        System.out.println("NA");
+}
+
+// #22
+public static void viewAllAssignmentScores() {
+    if(login() ){
+        if (assScoreArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assScoreArray, code) && arraySearch(assScoreArray, emailInput)){ //Validation
+                int ros[] = arrayRowSearch(assScoreArray, emailInput, code);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Assignment: " + assScoreArray[r][2]+ "   Score: "+ assScoreArray[r][3]);
+                    if(assScoreArray[r][3]==null){
+                        System.out.println("No Score");
+                    }
+                }
+
+            }
+            else
+                System.out.println("NA");
+        }
+        else
+            System.out.println("NA");
+    }
+    else
+        System.out.println("NA");
+}
+
+//Grading function
+public static String letterGrades(String scoreValue) {
+    String letterValue = null;
+    if (scoreValue != null) {
+        float floatValue = Float.parseFloat(scoreValue);
+        letterValue = null;
+        if (floatValue > 85)
+            letterValue = "A+";
+        else if (floatValue > 79 && floatValue < 85)
+            letterValue = "A";
+        else if (floatValue > 74 && floatValue < 80)
+            letterValue = "B+";
+        else if (floatValue > 69 && floatValue < 75)
+            letterValue = "B";
+        else if (floatValue > 64 && floatValue < 70)
+            letterValue = "C+";
+        else if (floatValue > 59 && floatValue < 65)
+            letterValue = "C";
+        else if (floatValue > 54 && floatValue < 60)
+            letterValue = "D+";
+        else if (floatValue > 49 && floatValue < 55)
+            letterValue = "D";
+        else if (floatValue < 50)
+            letterValue = "E";
+        else if (floatValue == 0)
+            letterValue = "Incomplete";
+
+    } else
+        System.out.println("NA");
+
+    return letterValue;
+}
+
+
+
+// #23
+public static void viewAssignmentGrade(){
+    if(login() ){
+        if (assScoreArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assScoreArray, assignmentName) && arraySearch(assScoreArray, emailInput)){ //Validation
+                int ros[] = arrayRowSearch(assScoreArray, emailInput, assignmentName);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Email:"+ assScoreArray[r][0] + "   Assignment: " + assScoreArray[r][2]+
+                            "   Score: "+ assScoreArray[r][3] +
+                            "Letter Grade: "+ letterGrades(assScoreArray[r][3]));
+                    if(assScoreArray[r][3]==null){
+                        System.out.println("No Score");
+                    }
+                }
+
+            }
+            else
+                System.out.println("NA");
+        }
+        else
+            System.out.println("NA");
+    }
+    else
+        System.out.println("NA");
+}
+
+// #24
+public static void viewAssignmentGrades(){
+    if(login() && isFaculty() && courseInfo.containsKey(emailInput)){
+        if (assScoreArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assScoreArray, assignmentName) && arraySearch(assScoreArray, code)){ //Validation
+                int ros[] = arrayRowSearch(assScoreArray, code, assignmentName);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Student Email:"+ assScoreArray[r][0] + "   Assignment: " +
+                            assScoreArray[r][2]+ "Score: " + assScoreArray[r][3]+
+                            "   Letter Grade: "+ letterGrades(assScoreArray[r][3])) ;
+                    if(assScoreArray[r][3]==null){
+                        System.out.println("No Score");
+                    }
+                }
+
+            }
+            else
+                System.out.println("NA");
+        }
+        else
+            System.out.println("NA");
+    }
+    else
+        System.out.println("NA");
+}
+
+// #25
+public static void viewAllAssignmentGrades(){
+    if(login() ){
+        if (assScoreArray != null){
+            System.out.println("\nEnter Course Code:");
+            generalEntry();
+            String code = generalInput;
+
+            System.out.println("\nEnter Assignment Name:");
+            generalEntry();
+            String assignmentName = generalInput;
+
+            if (arraySearch(assScoreArray, code) && arraySearch(assScoreArray, emailInput)){ //Validation
+                int ros[] = arrayRowSearch(assScoreArray, emailInput, code);
+                for (int i = 0; i < ros.length; i++) {
+
+                    int r = ros[i];
+                    System.out.println("Assignment: " + assScoreArray[r][2]+ "   Score: "
+                            + assScoreArray[r][3]+ "Letter Grade: "+ letterGrades(assScoreArray[r][3]));
+                    if(assScoreArray[r][3]==null){
+                        System.out.println("No Score");
+                    }
+                }
+
+            }
+            else
+                System.out.println("NA");
+        }
+        else
+            System.out.println("NA");
+    }
+    else
+        System.out.println("NA");
+}
+
+// #26
+public static void setNotificationPreferences(){
+        if(login()){
+            System.out.println("\nAnswer 'Yes' or 'No'");
+
+            //notify assignment being posted
+            System.out.println("\nWould you like to be notified when assignments are posted?");
+            generalEntry();
+            String postNotification = generalInput.toLowerCase();
+
+            //notify when an assignment is graded
+            System.out.println("\nWould you like to be notified when assignments are Scored?");
+            generalEntry();
+            String scoreNotification = generalInput.toLowerCase();
+
+            //notify when user registers for course
+            System.out.println("Would you like to be notified when you register for a course?");
+            generalEntry();
+            String registrationNotification = generalInput.toLowerCase();
+
+            //Array
+            assScoreArray = new String[100][10];
+            int rowPerm = 0;
+
+
+            //Entry
+            permissionsArray[rowPerm][emailColumn] = emailInput;
+            permissionsArray[rowPerm][1] = postNotification;
+            permissionsArray[rowPerm][2] = scoreNotification;
+            permissionsArray[rowPerm][3] =registrationNotification;
+
+            //New entry increment
+            rowPerm += 1;
+
+        }
+}
+
+}
+
+
+
 
